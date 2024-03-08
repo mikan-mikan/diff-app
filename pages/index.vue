@@ -24,16 +24,31 @@ const compareTexts = (): Props => {
   const colorWhite = 'transparent';
 
   const colorizeDiff = (part: Change): void => {
+    if (part.added === true) {
+      return;
+    }
+
     const color = part.removed ? colorRed : colorWhite;
-    if (part.added !== true) {
-      const brCount = part.value.match(/\n/g);
-      if (brCount) {
-        result += part.value.replace(/\n/g, '<br>');
-      } else {
-        // XSS対策
-        for (let i = 0; i < part.value.length; i++) {
-          result += `<span style="background-color:${color}">${part.value[i]}</span>`;
+    const brCount = part.value.match(/\n/g);
+    if (brCount) {
+      const textArray = part.value.split(/(\n)/g);
+      if (!textArray) {
+        return;
+      }
+      for (let i = 0; i < textArray.length; i++) {
+        if (textArray[i] === '\n') {
+          result += `<br>`;
+        } else {
+          // XSS対策
+          for (let j = 0; j < textArray[i].length; j++) {
+            result += `<span style="background-color:${color}">${textArray[i][j]}</span>`;
+          }
         }
+      }
+    } else {
+      // XSS対策
+      for (let i = 0; i < part.value.length; i++) {
+        result += `<span style="background-color:${color}">${part.value[i]}</span>`;
       }
     }
   };
