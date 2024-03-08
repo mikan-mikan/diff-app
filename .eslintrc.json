@@ -2,10 +2,14 @@
   "root": true,
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "es2020": true
   },
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:vue/vue3-recommended", "prettier"],
-
+  "parserOptions": {
+    "parser": "@typescript-eslint/parser",
+    "ecmaVersion": 2020
+  },
   "ignorePatterns": ["node_modules/*", ".nuxt/*", "dist/*"],
   "plugins": ["unused-imports", "simple-import-sort"],
   "rules": {
