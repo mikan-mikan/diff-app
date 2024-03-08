@@ -13,13 +13,22 @@ export default {
     const compareTexts = () => {
       const diffLeft = diffChars(textA.value, textB.value);
       const diffRight = diffChars(textB.value, textA.value);
-
-      // console.log(diffLeft);
+      const colorRed = 'pink';
+      const colorWhite = 'transparent';
 
       const colorizeDiff = (part) => {
-        const color = part.added ? 'green' : part.removed ? 'red' : 'white';
+        const color = part.removed ? colorRed : colorWhite;
         if (part.added !== true) {
-          result += `<span style="background-color:${color}">${part.value}</span>`;
+          const brCount = part.value.match(/\n/g);
+          if (brCount) {
+            const br = '<br>'.repeat(brCount.length);
+            result += br;
+          } else {
+            // XSS対策
+            for (let i = 0; i < part.value.length; i++) {
+              result += `<span style="background-color:${color}">${part.value[i]}</span>`;
+            }
+          }
         }
       };
 
