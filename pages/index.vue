@@ -1,52 +1,56 @@
-<script>
-import { diffChars } from 'diff';
+<script setup lang="ts">
+import { type Change, diffChars } from 'diff';
 import { ref } from 'vue';
 
-export default {
-  name: 'IndexView',
-  setup() {
-    const textA = ref('');
-    const textB = ref('');
-    const diffAResult = ref('');
-    const diffBResult = ref('');
+// name: 'IndexView',
 
-    const compareTexts = () => {
-      const diffLeft = diffChars(textA.value, textB.value);
-      const diffRight = diffChars(textB.value, textA.value);
-      const colorRed = 'pink';
-      const colorWhite = 'transparent';
+type Props = {
+  textA: globalThis.Ref<string>;
+  textB: globalThis.Ref<string>;
+  diffAResult: globalThis.Ref<string>;
+  diffBResult: globalThis.Ref<string>;
+  compareTexts: () => void;
+};
 
-      const colorizeDiff = (part) => {
-        const color = part.removed ? colorRed : colorWhite;
-        if (part.added !== true) {
-          const brCount = part.value.match(/\n/g);
-          if (brCount) {
-            const br = '<br>'.repeat(brCount.length);
-            result += br;
-          } else {
-            // XSS対策
-            for (let i = 0; i < part.value.length; i++) {
-              result += `<span style="background-color:${color}">${part.value[i]}</span>`;
-            }
-          }
+const textA = ref('');
+const textB = ref('');
+const diffAResult = ref('');
+const diffBResult = ref('');
+
+const compareTexts = (): Props => {
+  const diffLeft = diffChars(textA.value, textB.value);
+  const diffRight = diffChars(textB.value, textA.value);
+  const colorRed = 'pink';
+  const colorWhite = 'transparent';
+
+  const colorizeDiff = (part: Change): void => {
+    const color = part.removed ? colorRed : colorWhite;
+    if (part.added !== true) {
+      const brCount = part.value.match(/\n/g);
+      if (brCount) {
+        result += part.value.replace(/\n/g, '<br>');
+      } else {
+        // XSS対策
+        for (let i = 0; i < part.value.length; i++) {
+          result += `<span style="background-color:${color}">${part.value[i]}</span>`;
         }
-      };
+      }
+    }
+  };
 
-      let result = '';
-      diffLeft.forEach((part) => {
-        colorizeDiff(part);
-      });
-      diffAResult.value = result;
+  let result = '';
+  diffLeft.forEach((part) => {
+    colorizeDiff(part);
+  });
+  diffAResult.value = result;
 
-      result = '';
-      diffRight.forEach((part) => {
-        colorizeDiff(part);
-      });
-      diffBResult.value = result;
-    };
+  result = '';
+  diffRight.forEach((part) => {
+    colorizeDiff(part);
+  });
+  diffBResult.value = result;
 
-    return { textA, textB, compareTexts, diffAResult, diffBResult };
-  },
+  return { textA, textB, diffAResult, diffBResult, compareTexts };
 };
 </script>
 
