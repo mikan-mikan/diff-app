@@ -1,6 +1,43 @@
 <script>
+import { diffChars } from 'diff';
+import { ref } from 'vue';
+
 export default {
   name: 'IndexView',
+  setup() {
+    const textA = ref('');
+    const textB = ref('');
+    const diffAResult = ref('');
+    const diffBResult = ref('');
+
+    const compareTexts = () => {
+      const diffLeft = diffChars(textA.value, textB.value);
+      const diffRight = diffChars(textB.value, textA.value);
+
+      // console.log(diffLeft);
+
+      const colorizeDiff = (part) => {
+        const color = part.added ? 'green' : part.removed ? 'red' : 'white';
+        if (part.added !== true) {
+          result += `<span style="background-color:${color}">${part.value}</span>`;
+        }
+      };
+
+      let result = '';
+      diffLeft.forEach((part) => {
+        colorizeDiff(part);
+      });
+      diffAResult.value = result;
+
+      result = '';
+      diffRight.forEach((part) => {
+        colorizeDiff(part);
+      });
+      diffBResult.value = result;
+    };
+
+    return { textA, textB, compareTexts, diffAResult, diffBResult };
+  },
 };
 </script>
 
@@ -8,31 +45,31 @@ export default {
   <div>
     <!-- <RouterLink to="/about">Aboutページへ</RouterLink> -->
     <div class="wrap">
-      <h1 class="title">ここにタイトル</h1>
+      <h1 class="title">差分を表示させる</h1>
 
       <div class="container">
         <div class="item">
           <p>A</p>
-          <textarea class="textarea" placeholder="入力しましょう"></textarea>
+          <textarea v-model="textA" class="textarea" placeholder="入力しましょう"></textarea>
         </div>
         <div class="item">
           <p>B</p>
-          <textarea class="textarea" placeholder="人カしましょう"></textarea>
+          <textarea v-model="textB" class="textarea" placeholder="人カしましょう"></textarea>
         </div>
       </div>
 
       <div class="button-wrap">
-        <button type="button" class="diff-button">差分を表示</button>
+        <button type="button" class="diff-button" @click="compareTexts">差分を表示</button>
       </div>
 
       <div class="container">
         <div class="item">
           <p>A</p>
-          <div>Aテキストを表示させる</div>
+          <div v-html="diffAResult"></div>
         </div>
         <div class="item">
           <p>B</p>
-          <div>Bテキストを表示させる</div>
+          <div v-html="diffBResult"></div>
         </div>
       </div>
     </div>
@@ -46,7 +83,7 @@ export default {
 }
 .wrap {
   margin: 0 auto;
-  max-width: 1200px;
+  max-width: 120rem;
   width: 95%;
 }
 .button-wrap {
@@ -76,8 +113,8 @@ export default {
 .textarea {
   padding: 1rem;
   width: 100%;
-  height: 100px;
-  min-height: 300px;
+  height: 10rem;
+  min-height: 30rem;
   resize: vertical;
 }
 .hr {
