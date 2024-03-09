@@ -17,4 +17,14 @@ export default defineNuxtConfig({
       },
     },
   },
+  app: {
+    head: {
+      title: 'テキスト差分表示',
+      meta: [
+        { charset: 'utf-8' },
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { hid: 'description', name: 'description', content: 'テキストを比較して差分をわかりやすくします。' },
+      ],
+    },
+  },
 });

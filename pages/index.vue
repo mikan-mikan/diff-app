@@ -56,10 +56,6 @@ const { textA, textB, diffAResult, diffBResult, compareTexts } = useDiffHook();
 .result-title span {
   background: linear-gradient(transparent 60%, var(--color-white) 60%);
 }
-.wrap {
-  min-height: 100dvh;
-  min-height: 100vh;
-}
 .inner {
   padding: 3rem 0 4rem;
   margin: 0 auto 0;
