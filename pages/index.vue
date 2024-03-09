@@ -1,83 +1,7 @@
 <script setup lang="ts">
-import { type Change, diffChars } from 'diff';
-import { ref } from 'vue';
+import { useDiffHook } from '~/hooks/useDiffHook';
 
-// name: 'IndexView',
-
-type Props = {
-  textA: globalThis.Ref<string>;
-  textB: globalThis.Ref<string>;
-  diffAResult: globalThis.Ref<string>;
-  diffBResult: globalThis.Ref<string>;
-  compareTexts: () => void;
-};
-
-const textA = ref('');
-const textB = ref('');
-const diffAResult = ref('');
-const diffBResult = ref('');
-
-const compareTexts = (): Props => {
-  const diffLeft = diffChars(textA.value, textB.value);
-  const diffRight = diffChars(textB.value, textA.value);
-  const colorRed = '#c397a8';
-  const colorGreen = '#92b3b5';
-  const colorWhite = 'transparent';
-
-  const colorizeDiff = (part: Change, colorName: string): void => {
-    if (part.added === true) {
-      return;
-    }
-
-    const backgroundColor = part.removed ? colorName : colorWhite;
-    const brCount = part.value.match(/\n/g);
-    if (brCount) {
-      const textArray = part.value.split(/(\n)/g);
-      if (!textArray) {
-        return;
-      }
-      for (let i = 0; i < textArray.length; i++) {
-        if (textArray[i] === '\n') {
-          result += `<br>`;
-        } else {
-          // XSS対策
-          for (let j = 0; j < textArray[i].length; j++) {
-            // 半角スペースをHTMLエンティティに変換
-            if (textArray[i][j] === ' ') {
-              result += '&nbsp;';
-            } else {
-              result += `<span style="background-color:${backgroundColor}">${textArray[i][j]}</span>`;
-            }
-          }
-        }
-      }
-    } else {
-      // XSS対策
-      for (let i = 0; i < part.value.length; i++) {
-        // 半角スペースをHTMLエンティティに変換
-        if (part.value[i] === ' ') {
-          result += '&nbsp;';
-        } else {
-          result += `<span style="background-color:${backgroundColor}">${part.value[i]}</span>`;
-        }
-      }
-    }
-  };
-
-  let result = '';
-  diffLeft.forEach((part) => {
-    colorizeDiff(part, colorGreen);
-  });
-  diffAResult.value = result;
-
-  result = '';
-  diffRight.forEach((part) => {
-    colorizeDiff(part, colorRed);
-  });
-  diffBResult.value = result;
-
-  return { textA, textB, diffAResult, diffBResult, compareTexts };
-};
+const { textA, textB, diffAResult, diffBResult, compareTexts } = useDiffHook();
 </script>
 
 <template>
@@ -96,7 +20,7 @@ const compareTexts = (): Props => {
       </div>
 
       <div class="button-wrap">
-        <button type="button" class="diff-button" @click="compareTexts">差分を表示</button>
+        <button type="button" class="diff-button" @click="compareTexts">差分を表示するボタン</button>
       </div>
 
       <template v-if="diffAResult || diffBResult">
@@ -137,7 +61,8 @@ const compareTexts = (): Props => {
   min-height: 100vh;
 }
 .inner {
-  margin: 3rem auto 4rem;
+  padding: 3rem 0 4rem;
+  margin: 0 auto 0;
   max-width: 200rem;
   width: 95%;
 }
