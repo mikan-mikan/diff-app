@@ -2,7 +2,9 @@
 
 [https://mikan-mikan.github.io/diff-app/](https://mikan-mikan.github.io/diff-app/)
 
-Node v20.11.0
+## Node version
+
+v20.11.0
 
 ## Setup
 
@@ -22,7 +24,7 @@ npm run dev
 
 ## Production
 
-mainOnce merged into the main branch, the project is automatically deployed by GitHub Actions.
+Once merged into the main branch, the project is automatically deployed by GitHub Actions.<br />
 To generate the sources locally, use the following command:
 
 ```bash
