@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     },
   },
   app: {
-    baseURL: '/diff-app/',
+    baseURL: process.env.BASE_URL || '/',
     head: {
       title: 'テキスト差分表示',
       meta: [
@@ -30,7 +30,7 @@ export default defineNuxtConfig({
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: '/diff-app/favicon.ico',
+          href: `${process.env.BASE_URL}favicon.ico`,
         },
       ],
     },
