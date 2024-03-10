@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     },
   },
   app: {
+    baseURL: '/diff-app/',
     head: {
       title: 'テキスト差分表示',
       meta: [
