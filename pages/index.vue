@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import { useDiffHook } from '~/hooks/useDiffHook';
-
-const { textA, textB, diffAResult, diffBResult, compareTexts } = useDiffHook();
-</script>
-
 <template>
   <div class="wrap">
     <!-- <RouterLink to="/about">Aboutページへ</RouterLink> -->
@@ -19,9 +13,11 @@ const { textA, textB, diffAResult, diffBResult, compareTexts } = useDiffHook();
         </div>
       </div>
 
-      <div class="button-wrap">
-        <button type="button" class="diff-button" @click="compareTexts">差分を表示するボタン</button>
-      </div>
+      <Container :mt="'25'">
+        <div class="button-wrap">
+          <DefaultButton :color="'rose'" :button-text="'差分を表示するボタン'" :on-click="compareTexts" />
+        </div>
+      </Container>
 
       <template v-if="diffAResult || diffBResult">
         <p class="result-title"><span>結果はこちら</span></p>
@@ -37,6 +33,14 @@ const { textA, textB, diffAResult, diffBResult, compareTexts } = useDiffHook();
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+import Container from '~/components/parts/Container.vue';
+import DefaultButton from '~/components/parts/DefaultButton.vue';
+import { useDiffHook } from '~/hooks/useDiffHook';
+
+const { textA, textB, diffAResult, diffBResult, compareTexts } = useDiffHook();
+</script>
 
 <style scoped>
 .title {
@@ -102,26 +106,6 @@ const { textA, textB, diffAResult, diffBResult, compareTexts } = useDiffHook();
 }
 
 .button-wrap {
-  margin-top: 2.5rem;
   text-align: right;
-}
-.diff-button {
-  padding: 1rem 2rem 0.8rem;
-  border-radius: 0.5rem;
-  background-color: var(--color-rose);
-  border: 2px solid var(--color-black);
-  transition: all 0.1s ease-in-out;
-  color: var(--color-white);
-  font-size: 1.6rem;
-  font-weight: bold;
-}
-.diff-button:hover {
-  background-color: var(--color-white);
-  color: var(--color-rose);
-  transition: all 0.1s ease-in-out;
-}
-.diff-button:active {
-  transform: translateY(0.2rem);
-  transition: all 0.1s ease-in-out;
 }
 </style>
