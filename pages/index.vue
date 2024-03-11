@@ -14,9 +14,9 @@
       </div>
 
       <Container :mt="'25'">
-        <div class="button-wrap">
+        <FlexBox :justify="'flex-end'">
           <DefaultButton :color="'rose'" :button-text="'差分を表示するボタン'" :on-click="compareTexts" />
-        </div>
+        </FlexBox>
       </Container>
 
       <template v-if="diffAResult || diffBResult">
@@ -37,6 +37,7 @@
 <script setup lang="ts">
 import Container from '~/components/parts/Container.vue';
 import DefaultButton from '~/components/parts/DefaultButton.vue';
+import FlexBox from '~/components/parts/FlexBox.vue';
 import { useDiffHook } from '~/hooks/useDiffHook';
 
 const { textA, textB, diffAResult, diffBResult, compareTexts } = useDiffHook();
