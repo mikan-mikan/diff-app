@@ -1,17 +1,18 @@
 <template>
   <div class="wrap">
-    <!-- <RouterLink to="/about">Aboutページへ</RouterLink> -->
     <div class="inner">
       <h1 class="title"><span>テキストの差分を表示します</span></h1>
 
-      <div class="container">
-        <div class="item -green">
-          <textarea v-model="textA" class="textarea" placeholder="入力しましょう"></textarea>
-        </div>
-        <div class="item -pink">
-          <textarea v-model="textB" class="textarea" placeholder="人カしましょう"></textarea>
-        </div>
-      </div>
+      <Container :mt="'30'">
+        <FlexBox :gap="'30'" :justify="'space-between'" >
+          <div class="item -green">
+            <textarea v-model="textA" class="textarea" placeholder="入力しましょう"></textarea>
+          </div>
+          <div class="item -pink">
+            <textarea v-model="textB" class="textarea" placeholder="人カしましょう"></textarea>
+          </div>
+        </FlexBox>
+      </Container>
 
       <Container :mt="'25'">
         <FlexBox :justify="'flex-end'">
@@ -21,14 +22,16 @@
 
       <template v-if="diffAResult || diffBResult">
         <p class="result-title"><span>結果はこちら</span></p>
-        <div class="container">
-          <div class="item -green">
-            <div class="item__result" v-html="diffAResult"></div>
-          </div>
-          <div class="item -pink">
-            <div class="item__result" v-html="diffBResult"></div>
-          </div>
-        </div>
+        <Container :mt="'30'">
+          <FlexBox :gap="'30'" :justify="'space-between'" >
+            <div class="item -green">
+              <div class="item__result" v-html="diffAResult"></div>
+            </div>
+            <div class="item -pink">
+              <div class="item__result" v-html="diffBResult"></div>
+            </div>
+          </FlexBox>
+        </Container>
       </template>
     </div>
   </div>
@@ -66,11 +69,6 @@ const { textA, textB, diffAResult, diffBResult, compareTexts } = useDiffHook();
   margin: 0 auto 0;
   max-width: 200rem;
   width: 95%;
-}
-.container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 3rem;
 }
 .item {
   padding: 1rem;
