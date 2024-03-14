@@ -1,5 +1,5 @@
 <template>
-  <button :class="['diff-button', buttonColor]" type="button" @click="onClick">
+  <button :class="['diff-button', buttonColor, buttonSize]" type="button" @click="onClick">
     {{ buttonText }}
   </button>
 </template>
@@ -9,6 +9,7 @@ import { computed, defineProps } from 'vue';
 
 type Props = {
   color: 'black' | 'green' | 'light-pink' | 'light-blue' | 'light-purple' | 'dark-pink' | 'rose' | 'default';
+  size?: 'small' | 'medium';
   buttonText: string;
   onClick: () => void;
 };
@@ -35,6 +36,17 @@ const buttonColor = computed(() => {
       return '';
   }
 });
+
+const buttonSize = computed(() => {
+  switch (props.size) {
+    case 'small':
+      return '-small';
+    case 'medium':
+      return '-medium';
+    default:
+      return '-medium';
+  }
+});
 </script>
 
 <style scoped>
@@ -48,7 +60,14 @@ const buttonColor = computed(() => {
   font-size: 1.6rem;
   font-weight: bold;
 }
-.diff-button:hover {
+.diff-button:hover,
+.diff-button.-black:hover,
+.diff-button.-green:hover,
+.diff-button.-light-pink:hover,
+.diff-button.-light-blue:hover,
+.diff-button.-light-purple:hover,
+.diff-button.-dark-pink:hover,
+.diff-button.-rose:hover {
   background-color: var(--color-white);
   color: var(--color-rose);
 }
@@ -64,26 +83,37 @@ const buttonColor = computed(() => {
   }
 }
 
+/* size */
+.diff-button.-small {
+  padding: 0.5rem 1.6rem .4rem;
+  font-size: 1.6rem;
+  min-width: 15rem;
+}
+.diff-button.-medium {
+  padding: 1rem 2rem 0.8rem;
+  font-size: 1.6rem;
+}
+
 /* color */
-.-black {
+.diff-button.-black {
   background-color: var(--color-black);
 }
-.-green {
+.diff-button.-green {
   background-color: var(--color-green);
 }
-.-light-pink {
+.diff-button.-light-pink {
   background-color: var(--color-light-pink);
 }
-.-light-blue {
+.diff-button.-light-blue {
   background-color: var(--color-light-blue);
 }
-.-light-purple {
+.diff-button.-light-purple {
   background-color: var(--color-light-purple);
 }
-.-dark-pink {
+.diff-button.-dark-pink {
   background-color: var(--color-dark-pink);
 }
-.-rose {
+.diff-button.-rose {
   background-color: var(--color-rose);
 }
 </style>

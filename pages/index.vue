@@ -105,8 +105,4 @@ const { textA, textB, diffAResult, diffBResult, compareTexts } = useDiffHook();
   opacity: 0.7;
   border: none;
 }
-
-.button-wrap {
-  text-align: right;
-}
 </style>
