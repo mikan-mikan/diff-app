@@ -5,6 +5,7 @@
 </template>
 
 <script setup lang="ts">
+import { defineProps } from 'vue';
 
 type Props = {
   justify?: 'flex-start' | 'center' | 'flex-end' | 'space-between' | 'space-around' | 'space-evenly';
