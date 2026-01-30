@@ -2,17 +2,18 @@
 import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
+  compatibilityDate: '2026-01-30',
   typescript: {
     strict: true, // TypeScriptのstrictモードを有効にする
   },
   devtools: { enabled: true }, // 開発ツールを有効にする（Vue Devtoolsなど）
-  modules: ['@nuxtjs/eslint-module'], // NuxtJSのESLintモジュールをプロジェクトに追加する,eslintrc.jsonの読み込み設定は不要
+  modules: ['@nuxt/eslint'], // Nuxt ESLintモジュール（ESLint 9 flat config対応）
   css: ['normalize.css', '@/assets/scss/main.scss'],
   vite: {
     css: {
       preprocessorOptions: {
         scss: {
-          additionalData: `@import "@/assets/scss/_variables.scss";`, // パーシャルファイルを読み込む
+          additionalData: `@use "@/assets/scss/_variables.scss" as *;`, // Sass最新の@use構文
         },
       },
     },
@@ -30,7 +31,7 @@ export default defineNuxtConfig({
         {
           rel: 'icon',
           type: 'image/x-icon',
-          href: `${process.env.BASE_URL}favicon.ico`,
+          href: `${process.env.BASE_URL || '/'}favicon.ico`,
         },
       ],
     },
